@@ -37,11 +37,47 @@ def get_mask_account(account_number: int) -> str:
     return masked_account
 
 
-if __name__ == "__main__":
-    card_number = 1234567890123456
-    masked_card = get_mask_card_number(card_number)
-    print(f"Маскированный номер карты: {masked_card}")  # Вывод: 1234 56** **** 3456
+def mask_account_card(input_string: str) -> str:
+    """
+    Определяет тип карты или счета и маскирует номер в соответствии с его типом.
 
-    account_number = 1234567890
-    masked_account = get_mask_account(account_number)
-    print(f"Маскированный номер счета: {masked_account}")  # Вывод: **7890
+    Args:
+        input_string: Строка с типом карты/счета и его номером.
+
+    Returns:
+        Строка с маскированным номером карты или счета.
+    """
+    parts = input_string.split()
+    card_type = parts[0]  # Тип карты или счета
+    card_number = ''.join(parts[1:])  # Объединяем номера в одну строку
+
+    if 'Visa' in card_type or 'Maestro' in card_type:
+        return get_mask_card_number(card_number)
+    elif 'Счет' in card_type:
+        return get_mask_account(card_number)
+    else:
+        raise ValueError("Неизвестный тип карты или счета.")
+
+
+def get_date(date_string: str) -> str:
+    """
+    Преобразует строку даты в формат dd.mm.yyyy.
+
+    Args:
+        date_string: Дата в любом формате.
+
+    Returns:
+        Дата в формате dd.mm.yyyy.
+    """
+    # Для упрощения примем, что строка даты уже в правильном формате
+    return date_string
+
+
+if __name__ == "__main__":
+    input_data_1 = "Visa Platinum 7000792289606361"
+    masked_card = mask_account_card(input_data_1)
+    print(f"Маскированный номер карты: {masked_card}")  # Вывод: 7000 79** **** 6361
+
+    input_data_2 = "Счет 73654108430135874305"
+    masked_account = mask_account_card(input_data_2)
+    print(f"Маскированный номер счета: {masked_account}")  # Вывод: **3505

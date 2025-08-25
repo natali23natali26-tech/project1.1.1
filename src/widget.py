@@ -1,43 +1,6 @@
 import datetime
 
 
-def get_mask_card_number(card_number: str) -> str:
-    """
-    Маскирует номер карты по правилу XXXX XX** **** XXXX.
-
-    Args:
-        card_number: Номер карты в виде строки.
-
-    Returns:
-        Маскированный номер карты в виде строки.
-    """
-    if len(card_number) != 16:
-        raise ValueError("Номер карты должен содержать 16 цифр.")
-
-    masked_number = (
-        card_number[:4]
-        + " "
-        + card_number[4:6]
-        + "** **** "
-        + card_number[12:]
-    )
-    return masked_number
-
-
-def get_mask_account(account_number: str) -> str:
-    """
-    Маскирует номер счета по правилу **XXXX.
-
-    Args:
-        account_number: Номер счета в виде строки.
-
-    Returns:
-        Маскированный номер счета в виде строки.
-    """
-    masked_account = "**" + account_number[-4:]
-    return masked_account
-
-
 def mask_account_card(input_string: str) -> str:
     """
     Определяет тип карты или счета и маскирует номер в соответствии с его типом.
@@ -54,10 +17,19 @@ def mask_account_card(input_string: str) -> str:
     card_number = parts[-1]  # Берем только номер карты/счета
 
     if 'Visa' in card_type or 'Maestro' in card_type or 'MasterCard' in card_type:
-        masked_number = get_mask_card_number(card_number)
+        if len(card_number) != 16:
+            raise ValueError("Номер карты должен содержать 16 цифр.")
+
+        masked_number = (
+            card_number[:4]
+            + " "
+            + card_number[4:6]
+            + "** **** "
+            + card_number[12:]
+        )
         return f"{card_type} {masked_number}"
     elif 'Счет' in card_type:
-        masked_account = get_mask_account(card_number)
+        masked_account = "**" + card_number[-4:]
         return f"{card_type} {masked_account}"
     else:
         raise ValueError("Неизвестный тип карты или счета.")

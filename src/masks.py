@@ -11,7 +11,6 @@ def get_mask_card_number(card_number: int) -> str:
     card_number_str = str(card_number)
     if len(card_number_str) != 16:
         raise ValueError("Номер карты должен содержать 16 цифр.")
-
     masked_number = (
         card_number_str[:4]
         + " "
@@ -40,8 +39,9 @@ def get_mask_account(account_number: int) -> str:
 if __name__ == "__main__":
     card_number = 1234567890123456
     masked_card = get_mask_card_number(card_number)
-    print(f"Маскированный номер карты: {masked_card}")  # Вывод: 1234 56** **** 3456
+    print(f"Маскированный номер карты: {masked_card}")
 
     account_number = 1234567890
     masked_account = get_mask_account(account_number)
-    print(f"Маскированный номер счета: {masked_account}")  # Вывод: **7890
+    print(f"Маскированный номер счета: {masked_account}")
+

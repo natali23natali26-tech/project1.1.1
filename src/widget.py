@@ -1,4 +1,5 @@
 import datetime
+from utils import get_mask_card_number, get_mask_account  # Import from utils.py
 
 
 def mask_account_card(input_string: str) -> str:
@@ -13,23 +14,19 @@ def mask_account_card(input_string: str) -> str:
         Например, "Visa Platinum 7000 79** **** 6361" или "Счет **3505"
     """
     parts = input_string.split()
-    card_type = ' '.join(parts[:-1])  # Сохраняем полное название типа карты/счета
-    card_number = parts[-1]  # Берем только номер карты/счета
+    card_type = ' '.join(parts[:-1])
+    card_number_str = parts[-1]  # Номер как строка
+
+    try:
+        card_number = int(card_number_str)  # Преобразуем в int для совместимости
+    except ValueError:
+        return "Неверный формат номера карты/счета"
 
     if 'Visa' in card_type or 'Maestro' in card_type or 'MasterCard' in card_type:
-        if len(card_number) != 16:
-            raise ValueError("Номер карты должен содержать 16 цифр.")
-
-        masked_number = (
-            card_number[:4]
-            + " "
-            + card_number[4:6]
-            + "** **** "
-            + card_number[12:]
-        )
+        masked_number = get_mask_card_number(card_number)  # Use the imported functions
         return f"{card_type} {masked_number}"
     elif 'Счет' in card_type:
-        masked_account = "**" + card_number[-4:]
+        masked_account = get_mask_account(card_number)  # Use the imported functions
         return f"{card_type} {masked_account}"
     else:
         raise ValueError("Неизвестный тип карты или счета.")
@@ -46,14 +43,15 @@ def get_date(date_string: str) -> str:
         Дата в формате "ДД.ММ.ГГГГ" ("11.03.2024").
     """
     try:
-        date_object = datetime.datetime.fromisoformat(date_string.replace('Z', '+00:00'))  # Handle Z timezone
+        date_object = datetime.datetime.fromisoformat(
+            date_string.replace('Z', '+00:00')
+        )  # Handle Z timezone
         return date_object.strftime('%d.%m.%Y')
     except ValueError:
-        return "Неверный формат даты"  # Или можно выбросить исключение, если это предпочтительнее
+        return "Неверный формат даты"
 
 
 if __name__ == "__main__":
-    # Пример для карты
     input_card = "Visa Platinum 7000792289606361"
     masked_card = mask_account_card(input_card)
     print(f"{input_card} -> {masked_card}")

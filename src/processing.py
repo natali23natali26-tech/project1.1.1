@@ -40,21 +40,3 @@ if name == 'main':
         {'id': 939719570, 'state': 'EXECUTED', 'date': '2018-06-30T02:08:58.425572'},
         {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
     ]
-
-    # Пример работы filter_by_state
-    executed_data = filter_by_state(data)
-    print("Выход функции filter_by_state со статусом по умолчанию 'EXECUTED':")
-    print(executed_data)
-
-    canceled_data = filter_by_state(data, 'CANCELED')
-    print("\nВыход функции filter_by_state, если вторым аргументом передано 'CANCELED':")
-    print(canceled_data)
-
-    # Пример работы sort_by_date
-    sorted_data_desc = sort_by_date(data)
-    print("\nВыход функции sort_by_date (сортировка по убыванию):")
-    print(sorted_data_desc)
-
-    sorted_data_asc = sort_by_date(data, reverse=False)
-    print("\nВыход функции sort_by_date (сортировка по возрастанию):")
-    print(sorted_data_asc)

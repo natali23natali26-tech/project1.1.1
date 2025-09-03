@@ -41,7 +41,7 @@ if name == 'main':
         {'id': 615064591, 'state': 'CANCELED', 'date': '2018-10-14T08:21:33.419441'}
     ]
 
- # Пример работы filter_by_state
+    # Пример работы filter_by_state
     executed_data = filter_by_state(data)
     print("Выход функции filter_by_state со статусом по умолчанию 'EXECUTED':")
     print(executed_data)

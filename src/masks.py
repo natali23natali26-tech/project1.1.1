@@ -44,4 +44,3 @@ if __name__ == "__main__":
     account_number = 1234567890
     masked_account = get_mask_account(account_number)
     print(f"Маскированный номер счета: {masked_account}")
-

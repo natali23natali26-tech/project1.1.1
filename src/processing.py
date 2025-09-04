@@ -1,7 +1,7 @@
 import datetime
+from typing import List, Dict, Any
 
-
-def filter_by_state(data, state='EXECUTED'):
+def filter_by_state(data: List[Dict[str, Any]], state: str = 'EXECUTED') -> List[Dict[str, Any]]:
     """
     Фильтрует список словарей, оставляя только те, у которых значение ключа 'state'
     соответствует указанному значению (по умолчанию 'EXECUTED').
@@ -18,8 +18,7 @@ def filter_by_state(data, state='EXECUTED'):
     filtered_data = [item for item in data if item.get('state') == state]
     return filtered_data
 
-
-def sort_by_date(data, reverse=True):
+def sort_by_date(data: List[Dict[str, Any]], reverse: bool = True) -> List[Dict[str, Any]]:
     """
     Сортирует список словарей по дате.
 
@@ -33,8 +32,7 @@ def sort_by_date(data, reverse=True):
     """
     return sorted(data, key=lambda x: datetime.datetime.fromisoformat(x['date']), reverse=reverse)
 
-
-if name == 'main':
+if __name__ == '__main__':
     data = [
         {'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.512364'},
         {'id': 594226727, 'state': 'CANCELED', 'date': '2018-09-12T21:27:25.241689'},

@@ -1,74 +1,64 @@
 import pytest
-from typing import Tuple
-
 from masks import get_mask_card_number, get_mask_account
 
-# Fixture для подготовки данных для тестов номеров карт
-@pytest.fixture
-def card_number_data() -> Tuple[int, str]:
+# Тестирование функции get_mask_card_number
+@pytest.mark.parametrize(
+    "card_number, expected_output",
+    [
+        (1234567890123456, "1234 56** **** 3456"),
+        (9876543210123456, "9876 54** **** 3456"),
+        (1111222233334444, "1111 22** **** 4444"),
+    ],
+)
+def test_get_mask_card_number_valid(card_number, expected_output):
     """
-    Возвращает кортеж с номером карты и ожидаемым результатом маскирования.
+    Тестируется функция get_mask_card_number с валидными входными данными.
     """
-    return 1234567890123456, "1234 56** **** 3456"  # Ожидаемый результат маскирования для валидного номера карты
-
-# Fixture для подготовки данных для тестов номеров счетов
-@pytest.fixture
-def account_number_data() -> Tuple[int, str]:
-    """
-    Возвращает кортеж с номером счета и ожидаемым результатом маскирования.
-    """
-    return 1234567890, "**7890"  # Ожидаемый результат маскирования для валидного номера счета
-
-def test_get_mask_card_number_valid(card_number_data) -> None:
-    """
-    Тестирует функцию get_mask_card_number с валидным номером карты.
-    """
-    card_number, expected_masked_number = card_number_data
-    assert get_mask_card_number(card_number) == expected_masked_number
+    assert get_mask_card_number(card_number) == expected_output
 
 @pytest.mark.parametrize(
     "card_number, expected_exception",
     [
-        (123456789012345, ValueError),  # Менее 16 цифр
-        (12345678901234567, ValueError),  # Более 16 цифр
-        ("abc", ValueError),  # Не число
-        (123, ValueError)  # Менее 16 цифр
+        (123456789012345, ValueError),  # менее 16 цифр
+        (12345678901234567, ValueError),  # более 16 цифр
+        ("abcd123456789012", ValueError),  # некорректные символы
+        (None, ValueError)  # отсутствующий номер карты
     ],
 )
-def test_get_mask_card_number_invalid(card_number: int, expected_exception: Exception) -> None:
+def test_get_mask_card_number_invalid(card_number, expected_exception):
     """
-    Тестирует функцию get_mask_card_number с невалидными номерами карт.
+    Тестируется функция get_mask_card_number с невалидными входными данными.
     """
     with pytest.raises(expected_exception):
         get_mask_card_number(card_number)
 
-def test_get_mask_card_number_zero() -> None:
-    """
-    Тестирует функцию get_mask_card_number с нулевым номером карты.
-    """
-    # Ваша функция не обрабатывает ноль корректно, так как "0000" не является валидным номером карт.
-    # Убедитесь, что результат соответствует ожидаемому.
-    assert get_mask_card_number(0) == "**** **** **** 0"  # Здесь лучше ожидать, что функция вернет ошибку.
 
-def test_get_mask_account_valid(account_number_data) -> None:
-    """
-    Тестирует функцию get_mask_account с валидным номером счета.
-    """
-    account_number, expected_masked_account = account_number_data
-    assert get_mask_account(account_number) == expected_masked_account
-
+# Тестирование функции get_mask_account
 @pytest.mark.parametrize(
-    "account_number, expected_masked_account",
+    "account_number, expected_output",
     [
-        (1234, "**1234"),  # Ровно 4 цифры
-        (1, "**0001"),  # 1 цифра
-        (12, "**0012"),  # 2 цифры
-        (123, "**0123"),  # 3 цифры
-        (0, "**0000"),  # Ноль
+        (1234567890, "**7890"),
+        (987654321, "**4321"),
+        (1111, "**1111"),  # Проверка на короткой длине
     ],
 )
-def test_get_mask_account_edge_cases(account_number: int, expected_masked_account: str) -> None:
+def test_get_mask_account_valid(account_number, expected_output):
     """
-    Тестирует функцию get_mask_account с граничными случаями номеров счетов.
+    Тестируется функция get_mask_account с валидными входными данными.
     """
-    assert get_mask_account(account_number) == expected_masked_account
+    assert get_mask_account(account_number) == expected_output
+
+@pytest.mark.parametrize(
+    "account_number, expected_exception",
+    [
+        (123, ValueError),  # номер меньше 4-х цифр
+        ("abcd1234", ValueError),  # некорректные символы
+        (None, ValueError)  # отсутствующий номер счета
+    ],
+)
+def test_get_mask_account_invalid(account_number, expected_exception):
+    """
+    Тестируется функция get_mask_account с невалидными входными данными.
+    """
+    with pytest.raises(expected_exception):
+        get_mask_account(account_number)

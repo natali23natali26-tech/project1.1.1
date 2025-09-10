@@ -21,6 +21,10 @@ black = {version = "^23.0", extras = ["d", "python2"]}
 isort = "^5.0"
 mypy = "^1.0"
 
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^8.4.2"
+
 [tool.poetry.extras]
 lint = ["flake8", "black", "isort", "mypy"]
 

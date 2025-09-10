@@ -1,5 +1,5 @@
 import pytest
-from widget import mask_account_card, get_date
+from src.widget import mask_account_card, get_date
 
 # Тестирование функции mask_account_card
 @pytest.mark.parametrize(

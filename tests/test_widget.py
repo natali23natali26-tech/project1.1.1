@@ -24,7 +24,7 @@ def test_mask_account_card_valid(input_string, expected_output):
         ("UnknownType 1234567890", ValueError),  # Неизвестный тип
         ("Visa 123abc", "Неверный формат номера карты/счета"),  # Некорректный номер
         ("Счет not_a_number", "Неверный формат номера карты/счета"),  # Некорректный номер
-        ("", "Неверный формат номера карты/счета")  # Пустая строка
+        ("", ValueError)  # Пустая строка ожидает ValueError
     ],
 )
 def test_mask_account_card_invalid(input_string, expected_output):
@@ -36,7 +36,6 @@ def test_mask_account_card_invalid(input_string, expected_output):
             mask_account_card(input_string)
     else:
         assert mask_account_card(input_string) == expected_output
-
 
 # Тестирование функции get_date
 @pytest.mark.parametrize(

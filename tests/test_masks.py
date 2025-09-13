@@ -1,4 +1,21 @@
 import pytest
+
+import sys
+import os
+
+import src
+# Получаем абсолютный путь к каталогу с main.py
+
+project_dir = os.path.dirname(os.path.abspath(__file__))
+
+# Строим полный путь к папке my_modules
+modules_dir = os.path.join(project_dir, "src")
+
+# Вставляем этот путь в начало sys.path
+sys.path.insert(0, modules_dir)
+
+# Теперь можно импортировать модуль
+
 from src.masks import get_mask_card_number, get_mask_account
 
 # Фикстуры

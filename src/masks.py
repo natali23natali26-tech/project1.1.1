@@ -3,7 +3,7 @@ def get_mask_card_number(card_number: int) -> str:
     Маскирует номер карты по правилу XXXX XX** **** XXXX.
 
     Args:
-        card_number: Номер карты в виде целого числа.
+        Card number: Номер карты в виде целого числа.
 
     Returns:
         Маскированный номер карты в виде строки.
@@ -26,7 +26,7 @@ def get_mask_account(account_number: int) -> str:
     Маскирует номер счета по правилу **XXXX.
 
     Args:
-        account_number: Номер счета в виде целого числа.
+        Account number: Номер счета в виде целого числа.
 
     Returns:
         Маскированный номер счета в виде строки.

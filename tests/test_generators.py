@@ -1,7 +1,10 @@
 import pytest
 
 # Импортируем функции, которые будем тестировать
-from src.generators import filter_by_currency, transaction_descriptions, card_number_generator
+from src.generators import (card_number_generator,
+                            filter_by_currency,
+                            transaction_descriptions)
+
 
 # Тесты для функции filter_by_currency
 @pytest.mark.parametrize("transactions, currency_code, expected", [
@@ -17,8 +20,10 @@ from src.generators import filter_by_currency, transaction_descriptions, card_nu
     ([], "USD", 0),  # Пустой список
 ])
 def test_filter_by_currency(transactions, currency_code, expected):
-    filtered_transactions = list(filter_by_currency(transactions, currency_code))
+    filtered_transactions = list(
+        filter_by_currency(transactions, currency_code))
     assert len(filtered_transactions) == expected
+
 
 # Тесты для функции transaction_descriptions
 @pytest.mark.parametrize("transactions, expected_descriptions", [
@@ -34,6 +39,7 @@ def test_filter_by_currency(transactions, currency_code, expected):
 def test_transaction_descriptions(transactions, expected_descriptions):
     descriptions = list(transaction_descriptions(transactions))
     assert descriptions == expected_descriptions
+
 
 # Тесты для card_number_generator
 @pytest.mark.parametrize("start, stop, expected_numbers", [

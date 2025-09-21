@@ -8,8 +8,9 @@ def filter_by_currency(transactions: Generator[Dict[str, Any], None, None], curr
             yield transaction
 
 
-def transaction_descriptions(transactions: Generator[Dict[str, Any],
-None, None]) -> Generator[str, None, None]:
+def transaction_descriptions(
+        transactions: Generator[Dict[str, Any], None, None]
+) -> Generator[str, None, None]:
     """Генерирует описания транзакций."""
     for transaction in transactions:
         yield transaction['description']

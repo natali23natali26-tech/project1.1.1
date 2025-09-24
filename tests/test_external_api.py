@@ -1,6 +1,6 @@
 import unittest
 from unittest.mock import patch, Mock
-from external_api import get_exchange_rate
+from src.external_api import get_exchange_rate
 
 
 class TestGetExchangeRate(unittest.TestCase):

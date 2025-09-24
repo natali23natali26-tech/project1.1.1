@@ -24,3 +24,35 @@ def get_exchange_rate(currency):
     except Exception as e:
         print(f"Ошибка при получении курса валюты: {e}")
         return None
+
+
+from utils import convert_to_rub
+import json
+import os
+
+
+def load_transactions(file_path):
+    # Это функция для загрузки данных из JSON-файла,
+    # можете использовать ее из utils.py
+    if not os.path.exists(file_path):
+        print(f"Файл не найден: {file_path}")
+        return []
+
+    try:
+        with open(file_path, 'r', encoding='utf-8') as file:
+            data = json.load(file)
+            if isinstance(data, list):
+                return data
+            else:
+                print("Данные в файле не представляют собой список.")
+                return []
+    except Exception as e:
+        print(f"Ошибка при чтении файла: {e}")
+        return []
+
+
+if __name__ == "__main__":
+    transactions = load_transactions('data/operations.json')
+    for transaction in transactions:
+        rub_amount = convert_to_rub(transaction)
+        print(f"Сумма транзакции в рублях: {rub_amount}")

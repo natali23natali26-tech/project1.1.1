@@ -3,10 +3,11 @@ from unittest.mock import patch, mock_open
 import sys
 import os
 
+from src.utils import load_transactions, convert_to_rub  # Импортируем из src
+
 # Добавляем корневой путь проекта в sys.path для импортирования модулей
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../src')))
 
-from utils import load_transactions, convert_to_rub  # Импортируем из src
 
 class TestLoadTransactions(unittest.TestCase):
 

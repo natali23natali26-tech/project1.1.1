@@ -7,6 +7,7 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')  # Получаем API_KEY из переменной окружения
 
+
 def get_exchange_rate(currency):
     """
     Получает текущий курс валюты по отношению к рублю из Exchange Rates Data API.

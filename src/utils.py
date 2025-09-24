@@ -1,6 +1,9 @@
 import json
 import os
 
+from src.external_api import get_exchange_rate
+
+
 def load_transactions(file_path):
     """
     Загружает финансовые транзакции из указанного JSON-файла.
@@ -35,8 +38,6 @@ def load_transactions(file_path):
 
     return data
 
-
-from external_api import get_exchange_rate
 
 def convert_to_rub(transaction):
     """

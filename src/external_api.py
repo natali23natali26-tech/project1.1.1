@@ -7,13 +7,16 @@ load_dotenv()
 
 API_KEY = os.getenv('API_KEY')  # Получаем API_KEY из переменной окружения
 
-
 def get_exchange_rate(currency):
     """
     Получает текущий курс валюты по отношению к рублю из Exchange Rates Data API.
 
-    :param currency: Код валюты (например, 'USD' или 'EUR')
-    :return: Курс валюты по отношению к рублю, или None в случае ошибки
+    Отправляет запрос в API для получения актуальных курсов валют с базой RUB.
+    Если запрос успешен, возвращает курс для указанной валюты.
+    В случае ошибки при выполнении запроса или в полученных данных возвращает None.
+
+    :param currency: Код валюты (например, 'USD', 'EUR').
+    :return: Курс валюты по отношению к рублю, или None в случае ошибки.
     """
     url = f'https://api.apilayer.com/exchangerates_data/latest?base=RUB&symbols={currency}'
 

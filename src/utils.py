@@ -32,3 +32,29 @@ def load_transactions(file_path):
         return []
 
     return data
+
+
+from external_api import get_exchange_rate
+
+
+def convert_to_rub(transaction):
+    """
+    Функция для получения суммы транзакции в рублях.
+
+    :param transaction: Словарь с данными о транзакции, должен содержать ключи 'amount' и 'currency'
+    :return: Сумма транзакции в рублях как float
+    """
+    amount = transaction.get('amount')
+    currency = transaction.get('currency')
+
+    if currency == 'RUB':
+        return float(amount)  # Если уже в рублях, просто возвращаем сумму
+
+    # Получаем курс валюты через API
+    rate = get_exchange_rate(currency)
+
+    if rate is not None:
+        return float(amount) * rate  # Конвертация в рубли
+    else:
+        print(f"Не удалось получить курс для валюты: {currency}.")
+        return 0.0  # Возвращаем 0, если не удалось получить курс

@@ -1,0 +1,26 @@
+import requests
+
+API_KEY = 'P9scVvXKu3F1SdIqsS0nKYndV8xBvxbC'
+
+
+def get_exchange_rate(currency):
+    """
+    Получает текущий курс валюты по отношению к рублю из Exchange Rates Data API.
+
+    :param currency: Код валюты (например, 'USD' или 'EUR')
+    :return: Курс валюты по отношению к рублю, или None в случае ошибки
+    """
+    url = f'https://api.apilayer.com/exchangerates_data/latest?base=RUB&symbols={currency}'
+
+    headers = {
+        'apikey': API_KEY
+    }
+
+    try:
+        response = requests.get(url, headers=headers)
+        response.raise_for_status()  # Вызывает исключение для кода ответа >= 400
+        data = response.json()
+        return data['rates'].get(currency)  # Возвращаем курс для указанной валюты
+    except Exception as e:
+        print(f"Ошибка при получении курса валюты: {e}")
+        return None

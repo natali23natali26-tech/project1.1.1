@@ -5,7 +5,6 @@ import logging
 from src.decorators import log
 
 
-# Пример функции для тестирования
 @log()
 def add(x, y):
     return x + y

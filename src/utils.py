@@ -1,6 +1,5 @@
 import json
 import os
-
 from src.external_api import get_exchange_rate
 
 
@@ -27,11 +26,14 @@ def load_transactions(file_path):
     except json.JSONDecodeError:
         print("Ошибка при декодировании JSON. Проверьте формат файла.")
         return []
+    except FileNotFoundError:
+        print(f"Ошибка: файл не найден по пути: {file_path}.")
+        return []
     except Exception as e:
         print(f"Ошибка при чтении файла: {e}")
         return []
 
-    # Проверяем, является ли прочитанные данные списком
+    # Проверяем, являются ли прочитанные данные списком
     if not isinstance(data, list):
         print("Данные в файле не представляют собой список.")
         return []
@@ -44,16 +46,21 @@ def convert_to_rub(transaction):
     Конвертирует сумму транзакции в рубли на основе валютного курса.
 
     Если валюта транзакции уже является рублем, просто возвращает сумму.
-    В противном случае, запрашивает курс валюты и возвращает эквивалент в рублях.
+    В противном случае, извлекает сумму и валюту из вложенного словаря и запрашивает курс валюты.
     Если не удается получить курс, возвращает 0.0.
 
     :param transaction: Словарь с данными о транзакции,
-                       должен содержать ключи 'amount' и 'currency'.
+                       должен содержать ключи 'operationAmount.amount' и 'operationAmount.currency.code'.
     :return: Сумма транзакции в рублях как float.
              Если валюта неизвестна или возникает ошибка, возвращает 0.0.
     """
-    amount = transaction.get('amount')
-    currency = transaction.get('currency')
+    try:
+        # Извлекаем сумму и код валюты из вложенной структуры
+        amount = transaction['operationAmount']['amount']
+        currency = transaction['operationAmount']['currency']['code']
+    except KeyError as e:
+        print(f"Ошибка: отсутствует ключ {e} в транзакции.")
+        return 0.0
 
     if currency == 'RUB':
         return float(amount)  # Если уже в рублях, просто возвращаем сумму

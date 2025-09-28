@@ -1,16 +1,14 @@
-import unittest
+import pytest
 from unittest.mock import patch, Mock
 from src.external_api import get_exchange_rate
 
+@pytest.fixture
+def mock_env():
+    with patch('os.getenv', return_value='mock_api_key'):
+        yield
 
-class TestGetExchangeRate(unittest.TestCase):
-
-    @patch('requests.get')
-    @patch('os.getenv')
-    def test_get_exchange_rate_success(self, mock_getenv, mock_get):
-        # Настройка переменной окружения
-        mock_getenv.return_value = 'mock_api_key'
-
+def test_get_exchange_rate_success(mock_env):
+    with patch('requests.get') as mock_get:
         # Настройка мока для ответа от requests.get
         mock_response = Mock()
         mock_response.json.return_value = {
@@ -23,21 +21,13 @@ class TestGetExchangeRate(unittest.TestCase):
 
         # Вызов функции и проверка результата
         rate = get_exchange_rate('USD')
-        self.assertEqual(rate, 70.5)
+        assert rate == 70.5
 
-    @patch('requests.get')
-    @patch('os.getenv')
-    def test_get_exchange_rate_failure(self, mock_getenv, mock_get):
-        # Настройка переменной окружения
-        mock_getenv.return_value = 'mock_api_key'
-
+def test_get_exchange_rate_failure(mock_env):
+    with patch('requests.get') as mock_get:
         # Настройка мока на ошибку при запросе
         mock_get.side_effect = Exception("Network Error")
 
         # Вызов функции и проверка результата
         rate = get_exchange_rate('USD')
-        self.assertIsNone(rate)
-
-
-if __name__ == '__main__':
-    unittest.main()
+        assert rate is None

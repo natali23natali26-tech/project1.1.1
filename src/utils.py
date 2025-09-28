@@ -1,7 +1,6 @@
 import json
 import os
-from src.external_api import get_exchange_rate
-
+# from src.external_api import get_exchange_rate  # Закомментировано для возможности запуска без внешнего API
 
 def load_transactions(file_path):
     """
@@ -56,20 +55,38 @@ def convert_to_rub(transaction):
     """
     try:
         # Извлекаем сумму и код валюты из вложенной структуры
-        amount = transaction['operationAmount']['amount']
-        currency = transaction['operationAmount']['currency']['code']
-    except KeyError as e:
-        print(f"Ошибка: отсутствует ключ {e} в транзакции.")
+        amount = transaction.get('operationAmount', {}).get('amount')
+        currency = transaction.get('operationAmount', {}).get('currency', {}).get('code')
+
+        if amount is None or currency is None:
+             raise KeyError("Отсутствует обязательное поле amount или currency")
+
+        amount = float(amount)  # Преобразуем в число сразу после извлечения
+    except (KeyError, TypeError) as e:
+        print(f"Ошибка: отсутствует ключ {e} в транзакции или некорректный тип данных.")
         return 0.0
 
     if currency == 'RUB':
-        return float(amount)  # Если уже в рублях, просто возвращаем сумму
+        return amount  # Если уже в рублях, просто возвращаем сумму
 
     # Получаем курс валюты через API
-    rate = get_exchange_rate(currency)
+    # rate = get_exchange_rate(currency)  # Закомментировано для возможности запуска без внешнего API
+    rate = get_mock_exchange_rate(currency) # Используем мок
 
     if rate is not None:
-        return float(amount) * rate  # Конвертация в рубли
+        return amount * rate  # Конвертация в рубли
     else:
         print(f"Не удалось получить курс для валюты: {currency}.")
         return 0.0  # Возвращаем 0, если не удалось получить курс
+
+def get_mock_exchange_rate(currency):
+    """
+    Возвращает моковый курс обмена для указанной валюты.
+    В реальном коде здесь должен быть вызов внешнего API.
+    """
+    exchange_rates = {
+        'USD': 90.0,
+        'EUR': 100.0,
+        'GBP': 110.0
+    }
+    return exchange_rates.get(currency)

@@ -41,9 +41,6 @@ def get_exchange_rate(currency: str) -> Optional[float]:
 
         if 'rates' in data:
             return data['rates']['RUB']  # Возвращаем курс для указанной валюты
-        else:
-            print(f"Курс для валюты {currency} не найден или недоступен.")
-            return None
     except requests.exceptions.HTTPError as e:
         print(f"HTTP ошибка: {e}")
         return None

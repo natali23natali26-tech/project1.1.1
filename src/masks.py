@@ -1,6 +1,7 @@
 import logging
 import os
 
+
 # Настройка логирования
 def setup_logging():
     # Создаем папку для логов, если она не существует
@@ -53,11 +54,11 @@ def get_mask_card_number(card_number: int, logger) -> str:
         raise ValueError("Номер карты должен содержать 16 цифр.")
 
     masked_number = (
-        card_number_str[:4]
-        + " "
-        + card_number_str[4:6]
-        + "** **** "
-        + card_number_str[12:]
+            card_number_str[:4]
+            + " "
+            + card_number_str[4:6]
+            + "** **** "
+            + card_number_str[12:]
     )
 
     logger.info(f"Замаскированный номер карты: {masked_number}")

@@ -5,6 +5,7 @@ import requests
 
 from src.external_api import get_exchange_rate
 
+
 @pytest.fixture
 def mock_env():
     with patch('os.getenv', return_value='mock_api_key'):
@@ -13,7 +14,7 @@ def mock_env():
 
 @patch('requests.get')
 def test_get_exchange_rate_success(mock_get):
-    mock_get.return_value.json.return_value = {'rates': {'RUB': 70.5 }}
+    mock_get.return_value.json.return_value = {'rates': {'RUB': 70.5}}
     mock_get.return_value.status_code = 200
     rate = get_exchange_rate('USD')
     assert rate == 70.5
@@ -48,5 +49,5 @@ def test_get_exchange_rate_http_error(mock_env):
 
 
 def test_get_exchange_rate_none_currency():
-    rate = get_exchange_rate(None) # type: ignore
+    rate = get_exchange_rate(None)  # type: ignore
     assert rate is None

@@ -1,7 +1,7 @@
 import pytest
 
+from src.masks import get_mask_account, get_mask_card_number
 
-from src.masks import get_mask_card_number, get_mask_account
 
 # Фикстуры
 @pytest.fixture
@@ -23,7 +23,8 @@ def valid_account_number():
     ],
 )
 def test_get_mask_card_number_valid(card_number, expected_output):
-    """Тестируется функция get_mask_card_number с валидными входными данными."""
+    """Тестируется функция get_mask_card_number
+     с валидными входными данными."""
     assert get_mask_card_number(card_number) == expected_output
 
 
@@ -44,9 +45,13 @@ def test_get_mask_account_valid(account_number, expected_output):
     account_str = str(account_number)
 
     # Проверяем длину, чтобы убедиться, что она в пределах допустимых значений
-    assert 1 <= len(account_str) <= 10, f"Длина номера счета {account_number} должна быть от 1 до 10 символов."
+    assert 1 <= len(account_str) <= 10, \
+        (f"Длина номера счета {account_number} "
+         f"должна быть от 1 до 10 символов.")
 
-    last_four_digits = account_str[-4:].zfill(4)  # Берем последние 4 цифры и дополняем нулями слева, если их меньше 4.
+    # Берем последние 4 цифры и дополняем нулями слева,
+    # если их меньше 4.
+    last_four_digits = account_str[-4:].zfill(4)
     masked_account = "**" + last_four_digits  # Формируем маску.
 
     assert expected_output == masked_account
@@ -65,7 +70,8 @@ def test_get_mask_account_valid(account_number, expected_output):
     ],
 )
 def test_get_mask_account_no_exception(account_number):
-    """Проверяет, что get_mask_account не выбрасывает исключение для валидных данных."""
+    """Проверяет, что get_mask_account не выбрасывает
+     исключение для валидных данных."""
     try:
         get_mask_account(account_number)
     except Exception as e:

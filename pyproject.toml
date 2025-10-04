@@ -9,28 +9,30 @@ license = {text = "''"}
 readme = "README.md"
 requires-python = "3.13.5"
 dependencies = [
+    "requests (>=2.32.5,<3.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)"
 ]
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
 package-mode = false
+
 [tool.poetry.group.lint.dependencies]
 flake8 = "^6.0"
 black = {version = "^23.0", extras = ["d", "python2"]}
 isort = "^5.0"
 mypy = "^1.0"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.2"
+pytest-cov = "^7.0.0"
 
 [tool.poetry.extras]
 lint = ["flake8", "black", "isort", "mypy"]
 
 [tool.black]
-# Максимальная длина строки
-line-length = 119
+line-length = 79  # Изменили длину строки на 79
 # Файлы, которые не нужно форматировать
 exclude = '''
 (

@@ -1,8 +1,6 @@
 import pytest
 from unittest.mock import patch, mock_open
 
-import os
-import json
 from src.utils import load_transactions, convert_to_rub  # Импортируем из src
 
 

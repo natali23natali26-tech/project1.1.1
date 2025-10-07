@@ -1,18 +1,14 @@
 import logging
 import os
 
-# Глобальный логер для модуля masks
-masks_logger = None
 
 # Настройка логирования
 def setup_logging():
-    global masks_logger  # Изменяем глобальную переменную
-
     # Создаем папку для логов, если она не существует
     if not os.path.exists('logs'):
         os.makedirs('logs')
 
-    # Настройка основного логера приложения
+    # Основной логер приложения
     main_log_format = "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
     logging.basicConfig(
         filename='logs/app.log',  # Путь к файлу лога
@@ -36,6 +32,8 @@ def setup_logging():
     # Добавляем обработчик к логеру
     masks_logger.addHandler(masks_file_handler)
 
+    return masks_logger  # Возвращаем логер для дальнейшего использования
+
 
 # Функция для маскирования номера карты
 def get_mask_card_number(card_number: int) -> str:
@@ -48,6 +46,7 @@ def get_mask_card_number(card_number: int) -> str:
     Returns:
         str: Маскированный номер карты в виде строки.
     """
+    masks_logger = logging.getLogger('masks')
     card_number_str = str(card_number)
     if len(card_number_str) != 16:
         masks_logger.error("Номер карты должен содержать 16 цифр.")
@@ -76,6 +75,7 @@ def get_mask_account(account_number: int) -> str:
     Returns:
         str: Маскированный номер счета в виде строки.
     """
+    masks_logger = logging.getLogger('masks')
     account_number_str = str(account_number)
     masked_account = "**" + account_number_str[-4:]
 
@@ -84,7 +84,7 @@ def get_mask_account(account_number: int) -> str:
 
 
 if __name__ == "__main__":
-    setup_logging()  # Настройка логирования
+    masks_logger = setup_logging()  # Настройка логирования
 
     try:
         card_number = 1234567890123456

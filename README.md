@@ -55,6 +55,12 @@ Visa Platinum 7000 79** **** 6361  # выход функции
 [{'id': 41428829, 'state': 'EXECUTED', 'date': '2019-07-03T18:35:29.5123
 ```
 
+* Функция **read_transactions_from_csv(csv_path)** принимает путь к CSV-файлу csv_path. Использует pd.read_csv() для чтения данных из CSV в DataFrame. Преобразует DataFrame в список словарей с помощью df.to_dict(orient='records'). Возвращает список словарей с транзакциями.
+
+
+* Функция **read_transactions_from_excel(excel_path)** аналогично **read_transactions_from_csv()**, но использует pd.read_excel() для чтения данных из Excel-файла.
+
+
 ## Тестирование
 Результаты тестирования:
 file:///C:/Users/nata6/PycharmProjects/my_prg/Client's%20personal%20account/report.html?sort=result

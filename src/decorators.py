@@ -59,7 +59,6 @@ def log(filename=None):
             # Логируем начало выполнения функции
             logging.info(f"Start execution of {func.__name__} with args: {args} and kwargs: {kwargs}")
             try:
-                # Выполняем функцию
                 result = func(*args, **kwargs)
                 # Логируем успешное завершение с результатом
                 logging.info(f"{func.__name__} ok; result: {result}")

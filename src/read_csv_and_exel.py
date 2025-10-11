@@ -12,9 +12,10 @@ def read_transactions_from_csv(csv_path):
         list: Список словарей с транзакциями.
     """
     try:
-        df = pd.read_csv(csv_path)  # Читаем данные из CSV файла в DataFrame
+        # Указываем разделитель, чтобы прочитать данные из CSV файла в DataFrame
+        df = pd.read_csv(csv_path, sep=';', header=0)  # Разделитель - ';', первая строка - заголовки
         transactions = df.to_dict(orient='records')  # Преобразуем DataFrame в список словарей
-        return transactions
+        return transactions  # Возвращаем список транзакций
     except FileNotFoundError:
         print(f"Ошибка: Файл не найден по пути {csv_path}")  # Обрабатываем ошибку, если файл не найден
         return []

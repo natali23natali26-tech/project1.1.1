@@ -41,9 +41,11 @@ def sort_by_date(data: List[Dict[str, Any]],
     Returns:
         list: Новый список, отсортированный по дате.
     """
-    return sorted(data, key=lambda
-        x: datetime.datetime.fromisoformat(x['date']),
-                  reverse=reverse)
+    return sorted(
+        data,
+        key=lambda x: datetime.datetime.fromisoformat(x['date']),
+        reverse=reverse
+    )
 
 
 if __name__ == '__main__':

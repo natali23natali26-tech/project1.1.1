@@ -28,17 +28,14 @@ def mask_account_card(input_string: str) -> str:
     except ValueError:
         return "Неверный формат номера карты/счета"
 
-    if ('Visa' in card_type or 'Maestro'
-            in card_type or 'MasterCard' in card_type):
-        # Use the imported functions
+    if card_type in ['Visa','Maestro','MasterCard','МИР', 'Visa Classic', 'Visa Platinum', 'Visa Gold']:
         masked_number = get_mask_card_number(card_number)
         return f"{card_type} {masked_number}"
     elif 'Счет' in card_type:
-        # Use the imported functions
         masked_account = get_mask_account(card_number)
         return f"{card_type} {masked_account}"
     else:
-        raise ValueError("Неизвестный тип карты или счета.")
+        raise ValueError(f"Неизвестный тип карты или счета {card_type}")
 
 
 def get_date(date_string: str) -> str:

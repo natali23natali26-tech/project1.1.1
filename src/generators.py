@@ -1,10 +1,17 @@
 from typing import Generator, Dict, Any
 
 
-def filter_by_currency(transactions: Generator[Dict[str, Any], None, None], currency_code: str) -> Generator[Dict[str, Any], None, None]:
+def filter_by_currency(transactions: list[Dict[str, Any]], currency_code: str) -> Generator[Dict[str, Any]]:
     """Фильтрует транзакции по заданной валюте и возвращает итератор."""
     for transaction in transactions:
         if transaction['operationAmount']['currency']['code'] == currency_code:
+            yield transaction
+
+
+def filter_by_currency_csv_exml(transactions: list[Dict[str, Any]], currency_code: str) -> Generator[Dict[str, Any]]:
+    """Фильтрует транзакции по заданной валюте и возвращает итератор."""
+    for transaction in transactions:
+        if transaction['currency_code'] == currency_code:
             yield transaction
 
 

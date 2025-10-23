@@ -1,41 +1,41 @@
 import datetime
 
 # Import from utils.py
-from .masks import get_mask_account, get_mask_card_number
+from src.masks import get_mask_account, get_mask_card_number
 
 
 def mask_account_card(input_string: str) -> str:
     """
-    Определяет тип карты или счета
-    и маскирует номер в соответствии с его типом.
+       Определяет тип карты или счета
+       и маскирует номер в соответствии с его типом.
 
-    Args:
-        input_string: Строка с типом
-        карты/счета и его номером.
+       Args:
+           input_string: Строка с типом
+           карты/счета и его номером.
 
-    Returns:
-        Строка с маскированным номером карты или счета.
-        Например, "Visa Platinum 7000 79** **** 6361"
-        или "Счет **3505"
-    """
+       Returns:
+           Строка с маскированным номером карты или счета.
+           Например, "Visa Platinum 7000 79** **** 6361"
+           или "Счет **3505"
+       """
     parts = input_string.split()
     card_type = ' '.join(parts[:-1])
-    card_number_str = parts[-1]  # Номер как строка
+    card_number_str = parts[-1]
 
-    try:
-        # Преобразуем в int для совместимости
-        card_number = int(card_number_str)
-    except ValueError:
-        return "Неверный формат номера карты/счета"
-
-    if card_type in ['Visa','Maestro','MasterCard','МИР', 'Visa Classic', 'Visa Platinum', 'Visa Gold']:
-        masked_number = get_mask_card_number(card_number)
+    # Вызов функции с проверкой
+    if card_type in ['Visa', 'Maestro', 'MasterCard', 'МИР', 'Visa Classic', 'Visa Platinum', 'Visa Gold']:
+        masked_number = get_mask_card_number(card_number_str)
         return f"{card_type} {masked_number}"
     elif 'Счет' in card_type:
-        masked_account = get_mask_account(card_number)
-        return f"{card_type} {masked_account}"
+        # Для счетов считаем, что номер тоже в виде числа
+        try:
+            account_number = int(card_number_str)
+            masked_account = get_mask_account(account_number)
+            return f"{card_type} {masked_account}"
+        except ValueError:
+            return "Некорректный номер счета"
     else:
-        raise ValueError(f"Неизвестный тип карты или счета {card_type}")
+        raise ValueError(f"Неизвестный тип карты или счета: {card_type}")
 
 
 def get_date(date_string: str) -> str:

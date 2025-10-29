@@ -21,6 +21,7 @@ def mask_account_card(input_string: Union[str, int, None]) -> str:
        """
 
     result = ''
+    masked_account = ''
 
     if input_string is None:
         raise TypeError('Вводные данные отсутствуют.')
@@ -34,33 +35,12 @@ def mask_account_card(input_string: Union[str, int, None]) -> str:
         if word.isalpha():
             result += word + ' '
         elif word.isdigit():
-            if result == 'Счет':
-                account_number = int(word)
-                masked_account = get_mask_account(account_number)
+            if result == 'Счет ':
+                masked_account = get_mask_account(word)
             else:
-                account_number = int(word)
-                masked_account = get_mask_card_number(account_number)
+                masked_account = get_mask_card_number(word)
 
-    return f'{result} {masked_account}'
-
-    # parts = input_string.split()
-    # card_type = ' '.join(parts[:-1])
-    # card_number_str = parts[-1]
-
-    # Вызов функции с проверкой
-    # if card_type in ['Visa', 'Maestro', 'MasterCard', 'МИР', 'Visa Classic', 'Visa Platinum', 'Visa Gold']:
-    #     masked_number = get_mask_card_number(card_number_str)
-    #     return f"{card_type} {masked_number}"
-    # elif 'Счет' in card_type:
-    #     # Для счетов считаем, что номер тоже в виде числа
-    #     try:
-    #         account_number = int(card_number_str)
-    #         masked_account = get_mask_account(account_number)
-    #         return f"{card_type} {masked_account}"
-    #     except ValueError:
-    #         return "Некорректный номер счета"
-    # else:
-    #     raise ValueError(f"Неизвестный тип карты или счета: {card_type}")
+    return f'{result}{masked_account}'
 
 
 def get_date(date_string: str) -> str:

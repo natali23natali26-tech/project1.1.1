@@ -1,5 +1,6 @@
 import logging
 import os
+from typing import Union
 
 
 # Настройка логирования
@@ -36,11 +37,12 @@ def setup_logging():
 
 
 # Функция для маскирования номера карты
-def get_mask_card_number(card_number_str):
+def get_mask_card_number(card_number):
     """
     Маскирует номер карты по правилу XXXX XX** **** XXXX.
     При неправильном формате возвращает сообщение или маску.
     """
+    card_number_str = str(card_number)
     masks_logger = logging.getLogger('masks')
     # Проверяем, что строка содержит только цифры
     if not card_number_str.isdigit():
@@ -63,7 +65,7 @@ def get_mask_card_number(card_number_str):
 
 
 # Функция для маскирования номера счета
-def get_mask_account(account_number: int) -> str:
+def get_mask_account(account_number: Union[int, str]) -> str:
     """
     Маскирует номер счета по правилу **XXXX.
 

@@ -1,3 +1,5 @@
+import numpy as np
+
 from src.generators import filter_by_currency, filter_by_currency_csv_exml
 from src.processing import filter_by_state, sort_by_date
 from src.read_csv_and_exel import read_transactions_from_csv, read_transactions_from_excel
@@ -103,16 +105,14 @@ def main():
         print(f"Всего банковских операций в выборке: {len(search_transaction)}")
         for transaction in search_transaction:
             print(f"{get_date(transaction.get('date'))} {transaction.get('description')}")
-            if 'from' in transaction:
-                print(transaction.get('to'))
-                print(transaction.get('from'))
+            if 'from' in transaction and transaction['from'] is not np.nan:
                 print(f'{mask_account_card(transaction.get('to'))} -> {mask_account_card(transaction.get('from'))}')
             else:
                 print(f'{mask_account_card(transaction.get('to'))}')
-                if is_json:
-                    print(f"Сумма: {transaction['operationAmount']['amount']} {transaction['operationAmount']['currency']['name']}\n")
-                else:
-                    print(f"Сумма: {transaction['amount']} {transaction['currency_name']}\n")
+            if is_json:
+                print(f"Сумма: {transaction['operationAmount']['amount']} {transaction['operationAmount']['currency']['name']}\n")
+            else:
+                print(f"Сумма: {transaction['amount']} {transaction['currency_name']}\n")
 
 if __name__ == "__main__":
     main()

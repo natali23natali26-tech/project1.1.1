@@ -1,44 +1,46 @@
 import datetime
-
+from typing import Union
 # Import from utils.py
-from .masks import get_mask_account, get_mask_card_number
+
+from src.masks import get_mask_account, get_mask_card_number
 
 
-def mask_account_card(input_string: str) -> str:
+def mask_account_card(input_string: Union[str, int, None]) -> str:
     """
-    Определяет тип карты или счета
-    и маскирует номер в соответствии с его типом.
+       Определяет тип карты или счета
+       и маскирует номер в соответствии с его типом.
 
-    Args:
-        input_string: Строка с типом
-        карты/счета и его номером.
+       Args:
+           input_string: Строка с типом
+           карты/счета и его номером.
 
-    Returns:
-        Строка с маскированным номером карты или счета.
-        Например, "Visa Platinum 7000 79** **** 6361"
-        или "Счет **3505"
-    """
-    parts = input_string.split()
-    card_type = ' '.join(parts[:-1])
-    card_number_str = parts[-1]  # Номер как строка
+       Returns:
+           Строка с маскированным номером карты или счета.
+           Например, "Visa Platinum 7000 79** **** 6361"
+           или "Счет **3505"
+       """
 
-    try:
-        # Преобразуем в int для совместимости
-        card_number = int(card_number_str)
-    except ValueError:
-        return "Неверный формат номера карты/счета"
+    result = ''
+    masked_account = ''
 
-    if ('Visa' in card_type or 'Maestro'
-            in card_type or 'MasterCard' in card_type):
-        # Use the imported functions
-        masked_number = get_mask_card_number(card_number)
-        return f"{card_type} {masked_number}"
-    elif 'Счет' in card_type:
-        # Use the imported functions
-        masked_account = get_mask_account(card_number)
-        return f"{card_type} {masked_account}"
-    else:
-        raise ValueError("Неизвестный тип карты или счета.")
+    if input_string is None:
+        raise TypeError('Вводные данные отсутствуют.')
+
+    if not isinstance(input_string, str):
+        raise TypeError('Введена не строка')
+
+    words = input_string.split()
+
+    for word in words:
+        if word.isalpha():
+            result += word + ' '
+        elif word.isdigit():
+            if result == 'Счет ':
+                masked_account = get_mask_account(word)
+            else:
+                masked_account = get_mask_card_number(word)
+
+    return f'{result}{masked_account}'
 
 
 def get_date(date_string: str) -> str:

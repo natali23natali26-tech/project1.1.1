@@ -13,7 +13,7 @@ def mock_path_exists():
 def test_load_transactions_success(mock_path_exists):
     """Тестирование успешной загрузки транзакций из файла."""
     mock_path_exists.return_value = True
-    with patch("builtins.open", mock_open(read_data='[{"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}]')) as mock_file:
+    with patch("builtins.open", mock_open(read_data='[{"operationAmount": {"amount": 100, "currency": {"code": "USD"}}}]')):
         transactions = load_transactions('dummy_path.json')
         assert len(transactions) == 1
         assert transactions[0]['operationAmount']['amount'] == 100
@@ -30,7 +30,7 @@ def test_load_transactions_file_not_found(mock_path_exists):
 def test_load_transactions_invalid_json(mock_path_exists):
     """Тестирование обработки некорректного JSON."""
     mock_path_exists.return_value = True
-    with patch("builtins.open", mock_open(read_data='invalid json')) as mock_file:
+    with patch("builtins.open", mock_open(read_data='invalid json')):
         transactions = load_transactions('dummy_path.json')
         assert transactions == []
 

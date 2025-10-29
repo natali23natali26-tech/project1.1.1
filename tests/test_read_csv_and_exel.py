@@ -1,4 +1,3 @@
-import pytest
 from unittest.mock import patch
 import pandas as pd
 from src.read_csv_and_exel import read_transactions_from_csv, read_transactions_from_excel

@@ -1,5 +1,4 @@
 import pytest
-from unittest.mock import patch
 from src.transaction_processor import process_bank_search, process_bank_operations
 
 # Тестовые данные
